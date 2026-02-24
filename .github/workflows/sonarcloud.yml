@@ -12,11 +12,11 @@ permissions:
   pull-requests: read
 
 jobs:
-  analysis:
+  sonar:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -25,27 +25,18 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 21
+          java-version: '21'
 
-      - name: Debug SONAR_TOKEN presence
-        run: |
-          if [ -z "${{ secrets.SONAR_TOKEN }}" ]; then
-            echo "SONAR_TOKEN is EMPTY"
-            exit 1
-          else
-            echo "SONAR_TOKEN is SET"
-          fi
+      - name: Grant execute permission
+        run: chmod +x gradlew
 
-      - name: Analyze with Gradle Sonar
+      - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          chmod +x gradlew
-          ./gradlew sonar \
+          ./gradlew build sonar \
             -Dsonar.projectKey=A-Naila-Nursa-Krisnazulfa-2306275071_Modul-2-CI-CD \
             -Dsonar.organization=a-naila-nursa-krisnazulfa-2306275071 \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.token=$SONAR_TOKEN \
-            --stacktrace --info
-          
+            -Dsonar.token=${SONAR_TOKEN}
