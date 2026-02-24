@@ -36,15 +36,16 @@ jobs:
             echo "SONAR_TOKEN is SET"
           fi
 
-      - name: Build and analyze with Gradle
+      - name: Analyze with Gradle Sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           chmod +x gradlew
-          ./gradlew build sonar \
+          ./gradlew sonar \
             -Dsonar.projectKey=A-Naila-Nursa-Krisnazulfa-2306275071_Modul-2-CI-CD \
             -Dsonar.organization=a-naila-nursa-krisnazulfa-2306275071 \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.token=$SONAR_TOKEN
+            -Dsonar.token=$SONAR_TOKEN \
+            --stacktrace --info
           
