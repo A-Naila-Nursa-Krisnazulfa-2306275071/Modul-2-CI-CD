@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   sonar:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false)
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
@@ -31,9 +31,9 @@ jobs:
       - name: Grant execute permission
         run: chmod +x gradlew
 
-      - name: Debug SONAR_TOKEN availability
+      - name: DEBUG TOKEN v2
         run: |
-          if [ -z "${SONAR_TOKEN}" ]; then
+          if [ -z "$SONAR_TOKEN" ]; then
             echo "SONAR_TOKEN is EMPTY"
             exit 1
           else
@@ -42,8 +42,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      - name: Build and analyze
-        run: ./gradlew build sonar -Dsonar.projectKey=A-Naila-Nursa-Krisnazulfa-2306275071_Modul-2-CI-CD -Dsonar.organization=a-naila-nursa-krisnazulfa-2306275071 -Dsonar.host.url=https://sonarcloud.io
+      - name: Build and analyze v2
+        run: ./gradlew build sonar -Dsonar.projectKey=A-Naila-Nursa-Krisnazulfa-2306275071_Modul-2-CI-CD -Dsonar.organization=a-naila-nursa-krisnazulfa-2306275071 -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=$SONAR_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
