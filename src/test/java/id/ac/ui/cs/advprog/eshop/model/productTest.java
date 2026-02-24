@@ -31,5 +31,33 @@ class ProductTest {
     void testGetProductQuantity() {
         assertEquals(100, this.product.getProductQuantity());
     }
+
+    @Test
+    void testSetProductIdAgain() {
+        // ubah ID (bebas string karena cuma test setter/getter)
+        this.product.setProductId("phuwin i love you 123");
+        assertEquals("phuwin i love you 123", this.product.getProductId());
+    }
+
+    @Test
+    void testSetProductNameAgain() {
+        this.product.setProductName("johnny faker 96");
+        assertEquals("johnny faker 96", this.product.getProductName());
+    }
+
+    @Test
+    void testSetProductQuantityAgain() {
+        this.product.setProductQuantity(200);
+        assertEquals(200, this.product.getProductQuantity());
+    }
+
+    @Test
+    void testNewProductDefaultValues() {
+        Product emptyProduct = new Product();
+
+        assertNull(emptyProduct.getProductId());
+        assertNull(emptyProduct.getProductName());
+        assertEquals(0, emptyProduct.getProductQuantity());
+    }
 }
 
